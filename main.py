@@ -4,7 +4,6 @@ import cv2
 import mac_io
 
 # GLOBALS
-LAST_GESTURE = None
 LAST_GESTURES = [None] * 5
 
 # Volume Globals
@@ -13,9 +12,8 @@ BASE_LEVEL = 0
 
 
 def update_gestures(current_gesture):
-    global LAST_GESTURE, LAST_GESTURES
-    if current_gesture != LAST_GESTURE and current_gesture != 'None':
-        LAST_GESTURE = current_gesture
+    global LAST_GESTURES
+    if current_gesture != LAST_GESTURES[-1] and current_gesture != 'None':
         LAST_GESTURES.append(current_gesture)
         LAST_GESTURES.pop(0)  # Maintain a window of the last 5 gestures
         return True
@@ -24,7 +22,7 @@ def update_gestures(current_gesture):
 
 
 def process_gestures(result: 'GestureRecognizerResult', output_image: mp.Image, timestamp_ms: int):
-    global LAST_GESTURE, LAST_GESTURES, VOLUME_MODE, BASE_LEVEL
+    global LAST_GESTURES, VOLUME_MODE, BASE_LEVEL
 
     if len(result.gestures) == 0:
         return
