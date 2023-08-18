@@ -1,6 +1,5 @@
 import subprocess
 import os
-import pyautogui
 
 
 def set_volume(level: int):
@@ -13,10 +12,6 @@ def set_volume(level: int):
 def get_volume():
     volume = subprocess.getoutput("osascript -e 'output volume of (get volume settings)'")
     return int(volume)
-
-
-def press_key(key):
-    pyautogui.press(key)
 
 
 def toggle_play_pause_spotify():

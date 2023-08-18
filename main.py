@@ -3,14 +3,6 @@ import cv2
 
 import mac_io
 
-BaseOptions = mp.tasks.BaseOptions
-GestureRecognizer = mp.tasks.vision.GestureRecognizer
-GestureRecognizerOptions = mp.tasks.vision.GestureRecognizerOptions
-GestureRecognizerResult = mp.tasks.vision.GestureRecognizerResult
-VisionRunningMode = mp.tasks.vision.RunningMode
-
-video = cv2.VideoCapture(0)
-
 # GLOBALS
 LAST_GESTURE = None
 LAST_GESTURES = [None] * 5
@@ -31,7 +23,7 @@ def update_gestures(current_gesture):
         return False
 
 
-def process_gestures(result: GestureRecognizerResult, output_image: mp.Image, timestamp_ms: int):
+def process_gestures(result: 'GestureRecognizerResult', output_image: mp.Image, timestamp_ms: int):
     global LAST_GESTURE, LAST_GESTURES, VOLUME_MODE, BASE_LEVEL
 
     if len(result.gestures) == 0:
@@ -59,8 +51,15 @@ def process_gestures(result: GestureRecognizerResult, output_image: mp.Image, ti
         mac_io.previous_track_spotify()
 
 
-
 if __name__ == '__main__':
+    BaseOptions = mp.tasks.BaseOptions
+    GestureRecognizer = mp.tasks.vision.GestureRecognizer
+    GestureRecognizerOptions = mp.tasks.vision.GestureRecognizerOptions
+    GestureRecognizerResult = mp.tasks.vision.GestureRecognizerResult
+    VisionRunningMode = mp.tasks.vision.RunningMode
+
+    video = cv2.VideoCapture(0)
+
     options = GestureRecognizerOptions(
         base_options=BaseOptions(model_asset_path='gesture_recognizer.task'),
         running_mode=VisionRunningMode.LIVE_STREAM,
